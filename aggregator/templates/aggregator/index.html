@@ -2,4 +2,15 @@
 
 {%block content%}
     <h2>Landing Page</h2>
+{% if user.is_authenticated %}
+    <h4>Hi {{ user.username }}!</h4>
+    <a class='btn btn-success' href="{% url 'user_logout' %}">Log Out</a>
+{% else %}
+    <h4>You are not logged in</h4>
+    <div class="d-flex">
+        <a class='btn btn-success' href="{% url 'user_login' %}">Log In</a>
+        <h5 style="margin-left: 5px;">or</h5>
+        <a style="margin-left: 5px;" class='btn btn-success' href="{% url 'user_register' %}">Register</a>
+    </div>
+{% endif %}
 {%endblock%}

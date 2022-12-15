@@ -1,10 +1,28 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm
+from django.contrib.auth.forms import AuthenticationForm
 
-# Create your views here.
+#---------- Auth Stuff ----------#
 def user_login(request):
-    pass
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            # нужен редирект на страницу профиля
+            return redirect('/')
+    else:
+        if request.user.is_authenticated:
+            return redirect('/')
+        form = AuthenticationForm(request)
+    return render(request, 'accounts/login.html', {'form': form})
+
+def user_logout(request):
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    logout(request)
+    return redirect('/')
 
 def user_register(request):
     if request.method == 'POST':
@@ -22,9 +40,11 @@ def user_register(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             # нужен редирект на страницу профиля
-            return redirect('')
+            return redirect('/')
 
     else:
+        if request.user.is_authenticated:
+            return redirect('/')
         reg_form = RegisterForm()
 
     return render(request, 'accounts/register.html', {'form': reg_form})
