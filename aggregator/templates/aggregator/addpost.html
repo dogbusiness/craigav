@@ -1,0 +1,18 @@
+{% extends 'aggregator/base.html' %}
+
+{% block content %}
+<h2>Create New Post</h2>
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        {{ post_form.as_p }}
+    </form>
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        {{ category_form.as_p }}
+    </form>
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        {{ subcategory_form.as_p }}
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+{% endblock %}

@@ -4,9 +4,9 @@ from django import forms
 
 class RegisterForm(UserCreationForm):
     birth_date = forms.DateField()
-    phone_number = forms.CharField(max_length=100, help_text='Phone Number')
-    city = forms.CharField(max_length=100, help_text='City')
-    country = forms.CharField(max_length=100, help_text='Country')
+    phone_number = forms.CharField(max_length=100)
+    city = forms.CharField(max_length=100)
+    country = forms.CharField(max_length=100)
 
     class Meta:
         model = User
