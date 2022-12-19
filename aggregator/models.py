@@ -13,7 +13,6 @@ class Category(models.Model):
         return f'{self.name}'
 
 class Subcategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=30, choices=SUBCATEGORIES)
     
     class Meta:
