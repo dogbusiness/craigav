@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm
+from .forms import RegisterForm, ChangeUserForm
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User # temp import need to relocate to form new save method
 
 #---------- Auth Stuff ----------#
 def user_login(request):
@@ -48,3 +49,33 @@ def user_register(request):
         reg_form = RegisterForm()
 
     return render(request, 'accounts/register.html', {'form': reg_form})
+
+def change_profile(request):
+    if request.method == 'POST':
+        change_form = ChangeUserForm(request.POST)
+        if change_form.is_valid():
+            user = User.objects.get(id=request.user.id)
+            user.username = change_form.cleaned_data.get('username')
+            user.email = change_form.cleaned_data.get('email')
+            user.save()
+            user.refresh_from_db()
+            user.profile.birth_date = change_form.cleaned_data.get('birth_date')
+            user.profile.phone_number = change_form.cleaned_data.get('phone_number')
+            user.profile.city = change_form.cleaned_data.get('city')
+            user.profile.country= change_form.cleaned_data.get('country')
+            user.save()
+            user.refresh_from_db()
+            # relogin in case username changed
+            user = authenticate(username=user.username, password=user.password)
+            login(request, user)
+            # нужен редирект на страницу профиля
+            return redirect('/')
+    else:
+        if not request.user.is_authenticated:
+            return redirect('/')
+        # prepopulate fields with current user instance
+        prepolulated_fields = ChangeUserForm.prepopulate(request.user)
+        change_form = ChangeUserForm(initial=prepolulated_fields)
+    return render(request, 'accounts/profile.html', {'change_form': change_form})
+
+
