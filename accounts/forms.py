@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django import forms
 
@@ -40,6 +40,13 @@ class ChangeUserForm(forms.ModelForm):
     #     user.profile.country= change_form.cleaned_data.get('country')
     #     user.save()
     #     return user
+
+class SetPasswordForm(SetPasswordForm):
+    class Meta:
+        model = User
+        fields = ['new_password1', 'new_password2']
+
+
 
 
 

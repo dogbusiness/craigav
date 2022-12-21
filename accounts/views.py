@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm, ChangeUserForm
+from .forms import RegisterForm, ChangeUserForm, SetPasswordForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User # temp import need to relocate to form new save method
 
@@ -54,6 +54,7 @@ def change_profile(request):
     if request.method == 'POST':
         change_form = ChangeUserForm(request.POST)
         if change_form.is_valid():
+            # get user from db in order to change him
             user = User.objects.get(id=request.user.id)
             user.username = change_form.cleaned_data.get('username')
             user.email = change_form.cleaned_data.get('email')
@@ -78,4 +79,17 @@ def change_profile(request):
         change_form = ChangeUserForm(initial=prepolulated_fields)
     return render(request, 'accounts/profile.html', {'change_form': change_form})
 
-
+def change_password(request):
+    user = request.user
+    if request.method == "POST":
+        password_form = SetPasswordForm(user, request.POST)
+        if password_form.is_valid():
+            password_form.save()
+            return redirect('/')
+        else:
+            return render(request, 'accounts/changepassword.html', {'password_form': password_form})
+    else:
+        if not request.user.is_authenticated:
+            return redirect('/')
+        password_form = SetPasswordForm(user)
+        return render(request, 'accounts/changepassword.html', {'password_form': password_form})
