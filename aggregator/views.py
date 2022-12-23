@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
-#from .forms_old_multiple import CategoryForm, SubCategoryForm, PostForm
+from django.core.paginator import Paginator
 from .forms import PostForm
 from . import models
 
 # Create your views here.
 def index(request):
-    return render(request, 'aggregator/index.html')
+    posts = models.Post.objects.all()
+    paginator = Paginator(posts, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'aggregator/index.html', {'page': page_obj})
 
 def add_post(request):
     if request.method == "POST":

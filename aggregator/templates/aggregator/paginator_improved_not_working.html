@@ -1,0 +1,24 @@
+<!-- нерабочий "улучшенный паджинатор" {# 
+<div class="pagination container justify-content-center" style="border: 1px; border-color: aqua; text-align: center;">
+    <span class="step-links">
+        {% if page.has_previous %}
+            <a href="?page=1">&laquo;</a>
+            <a href="?page={{ page.previous_page_number }}">&lsaquo;</a>
+        {% endif %}
+
+        <span class="current">
+            {{page.number}}
+        </span>
+        
+        {% for pg_num in page.paginator.page_range %}
+            {% if paginator.get_page(pg_num).has_next %}
+                <a href="?page={{ page.paginator.get_page(pg_num).next_page_number }}">{{ page.paginator.get_page(pg_num).next_page_number }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}">&rsaquo;</a>
+            <a href="?page={{ page.paginator.num_pages }}">&raquo;</a>
+        {% endif %}
+    </span>
+</div>
+#}-->
