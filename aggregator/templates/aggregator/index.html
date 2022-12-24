@@ -21,7 +21,7 @@
                     <p>*Kartinochka*</p>
                 </div>
                 <div>
-                    <h4>{{ post.title|upper }}</h4>
+                    <h4><a href="{% url 'show_post' post_id=post.id %}">{{ post.title|upper }}</a></h4>
                 </div>
                 <div>
                     <h5>{{post.price}}$</h5>

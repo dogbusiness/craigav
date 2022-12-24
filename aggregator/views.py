@@ -11,6 +11,11 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     return render(request, 'aggregator/index.html', {'page': page_obj})
 
+def show_post(request, post_id):
+    #post = models.Post.objects.get(id=post_id)
+    post = models.Post.objects.select_related('category', 'subcategory', 'user').get(id=post_id)
+    return render(request, 'aggregator/post.html', {'post': post})
+
 def add_post(request):
     if request.method == "POST":
         post_form = PostForm(request.POST)

@@ -1,0 +1,13 @@
+{% extends 'aggregator/base.html' %}
+
+{%block content%}
+<h3>{{post.title}}</h3>
+<h4>{{post.price}}$</h4>
+<h5>{{post.city}}</h5>
+<hr>
+<h6>User: {{post.user.username}}</h6>
+<h6>Phone: {{post.user.profile.phone_number}}</h6>
+<hr>
+{{post.description}}
+
+{%endblock%}
