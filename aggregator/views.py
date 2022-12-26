@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .forms import PostForm
 from . import models
+from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 def index(request):
@@ -18,7 +19,7 @@ def show_post(request, post_id):
 
 def add_post(request):
     if request.method == "POST":
-        post_form = PostForm(request.POST)
+        post_form = PostForm(request.POST, request.FILES)
         if post_form.is_valid():
             data = post_form.cleaned_data
             # order of object creation: category -> subcategory -> post
@@ -29,8 +30,18 @@ def add_post(request):
                                                     user=request.user, category=category,
                                                     subcategory=subcategory, price=data['price'],
                                                     city = data['city'])
+            # if there is a picture
+            try:
+                photo = request.FILES['photo']
+                new_photo = models.Media.objects.create(name=photo.name, photo=photo, post_id=new_post.id)
+                return redirect('/')
+            except MultiValueDictKeyError:
+                return redirect('/')
+            
             # нужен редирект на "мои объявления"
             return redirect('/')
+        else:
+            return render(request, 'aggregator/addpost.html', {'post_form': post_form})
     else:
         if not request.user.is_authenticated:
             # нужно сделать редирект на главную страницу в идеале, где будет написано please login

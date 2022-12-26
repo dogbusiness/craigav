@@ -41,4 +41,4 @@ class Media(models.Model):
     photo = models.ImageField(upload_to='photo/%Y/%m/%d/')
 
     def __str__(self):
-        return f'{self.post}, {self.file_name}'       
+        return f'{self.post}, {self.name}'       

@@ -13,4 +13,4 @@ class PostForm(forms.Form):
     price = forms.DecimalField(max_digits=12, decimal_places=2)
     city = forms.CharField(max_length=200)
     description = forms.CharField(widget=forms.Textarea, max_length=1500)
-    # photo
+    photo = forms.ImageField(required=False)
