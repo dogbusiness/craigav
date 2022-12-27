@@ -37,8 +37,8 @@ class Post(models.Model):
 
 class Media(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    name = models.CharField(max_length=500)
-    photo = models.ImageField(upload_to='photo/%Y/%m/%d/')
+    name = models.CharField(max_length=500, null=True, blank=True)
+    photo = models.ImageField(upload_to='photo/%Y/%m/%d/', null=True, blank=True)
 
     def __str__(self):
         return f'{self.post}, {self.name}'       

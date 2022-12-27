@@ -15,19 +15,19 @@
 {% endif %}
 <div class="container">
     <div class="row">
-        {% for media in page %}
+        {% for post in page %}
             <div class="col">
                 <div>
-                    <p>Picture</p>
+                    <p>*Kartinochka*</p>
                 </div>
                 <div>
-                    <h4><a href="{% url 'show_post' post_id=media.post.id %}">{{ media.post.title|upper }}</a></h4>
+                    <h4><a href="{% url 'show_post' post_id=post.id %}">{{ post.title|upper }}</a></h4>
                 </div>
                 <div>
-                    <h5>{{media.post.price}}$</h5>
+                    <h5>{{post.price}}$</h5>
                 </div>
                 <div>
-                    <h6>{{media.post.city}}</h6>
+                    <h6>{{post.city}}</h6>
                 </div>
             </div>    
         {% endfor %}

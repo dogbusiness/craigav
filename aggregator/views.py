@@ -6,7 +6,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 def index(request):
-    posts = models.Post.objects.all()
+    posts = models.Media.objects.all()
     paginator = Paginator(posts, 2)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -34,8 +34,12 @@ def add_post(request):
             try:
                 photo = request.FILES['photo']
                 new_photo = models.Media.objects.create(name=photo.name, photo=photo, post_id=new_post.id)
+                print(new_photo)
                 return redirect('/')
             except MultiValueDictKeyError:
+                # even if there is no picture we absolutely need to create blank one because of how 
+                # index.html works
+                new_photo = models.Media.objects.create(name=None, photo=None, post_id=new_post.id)
                 return redirect('/')
             
             # нужен редирект на "мои объявления"
