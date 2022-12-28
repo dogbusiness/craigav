@@ -6,7 +6,8 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 def index(request):
-    posts = models.Media.objects.all()
+    posts = models.Post.objects.prefetch_related('media_set')
+    print(posts)
     paginator = Paginator(posts, 2)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
