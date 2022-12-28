@@ -2,55 +2,49 @@
 {% load static %}
 {%block content%}
     <h2>My posts</h2>
-<div class="container">
-    <div class="row">
-    {% if post in page %}
-        {% for post in page %}
-            <div class="col">
-                {% if post.media_set.all.0.photo %}
-                <div>
-                    <img src="{{post.media_set.all.0.photo.url}}" style="width:200px;height:150px;">
-                </div>
-                {% else %}
-                <div>
-                    <img src="{% static "aggregator/no-image-icon.png" %}" style="width:200px;height:150px;">
-                </div>
-                {% endif %}
-                <div>
-                    <h4><a href="{% url 'show_post' post_id=post.id %}">{{ post.title|upper }}</a></h4>
-                </div>
-                <div>
-                    <h5>{{post.price}}$</h5>
-                </div>
-                <div>
-                    <h6>{{post.city}}</h6>
-                </div>
-            </div>    
-        {% endfor %}
-    {% else %}
-        <div class="col">
-        <div>Nobody here but kittens</div>
+    <div class="container">
+        <div class="row">
+            {% for post in page %}
+                <div class="col">
+                    {% if post.media_set.all.0.photo %}
+                    <div>
+                        <img src="{{post.media_set.all.0.photo.url}}" style="width:200px;height:150px;">
+                    </div>
+                    {% else %}
+                    <div>
+                        <img src="{% static "aggregator/no-image-icon.png" %}" style="width:200px;height:150px;">
+                    </div>
+                    {% endif %}
+                    <div>
+                        <h4><a href="{% url 'show_post' post_id=post.id %}">{{ post.title|upper }}</a></h4>
+                    </div>
+                    <div>
+                        <h5>{{post.price}}$</h5>
+                    </div>
+                    <div>
+                        <h6>{{post.city}}</h6>
+                    </div>
+                </div>    
+            {% endfor %}
         </div>
-    {% endif %}
     </div>
-</div>
-
-<div class="pagination container justify-content-center" style="border: 1px; border-color: aqua; text-align: center;">
-    <span class="step-links">
-        {% if page.has_previous %}
-            <a href="?page=1">&laquo;</a>
-            <a href="?page={{ page.previous_page_number }}">&lsaquo;</a>
-        {% endif %}
-
-        <span class="current">
-            {{page.number}}
+    
+    <div class="pagination container justify-content-center" style="border: 1px; border-color: aqua; text-align: center;">
+        <span class="step-links">
+            {% if page.has_previous %}
+                <a href="?page=1">&laquo;</a>
+                <a href="?page={{ page.previous_page_number }}">&lsaquo;</a>
+            {% endif %}
+    
+            <span class="current">
+                {{page.number}}
+            </span>
+            
+            {% if page.has_next %}
+                <a href="?page={{ page.next_page_number }}">{{ page.next_page_number }}</a>
+                <a href="?page={{ page.next_page_number }}">&rsaquo;</a>
+                <a href="?page={{ page.paginator.num_pages }}">&raquo;</a>
+            {% endif %}
         </span>
-        
-        {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}">{{ page.next_page_number }}</a>
-            <a href="?page={{ page.next_page_number }}">&rsaquo;</a>
-            <a href="?page={{ page.paginator.num_pages }}">&raquo;</a>
-        {% endif %}
-    </span>
-</div>
-{%endblock%}
+    </div>
+    {%endblock%}

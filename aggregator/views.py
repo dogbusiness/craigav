@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from .forms import PostForm
+from .forms import PostForm, EditPostForm
 from . import models
 from django.utils.datastructures import MultiValueDictKeyError
 
@@ -16,15 +16,34 @@ def my_posts(request):
     if not request.user.is_authenticated:
         return redirect('/')
     posts = models.Post.objects.prefetch_related('media_set').filter(user=request.user)
+    print(posts)
     paginator = Paginator(posts, 2)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'aggregator/my_posts.html', {'page': page_obj})    
 
 def show_post(request, post_id):
-    #post = models.Post.objects.get(id=post_id)
-    post = models.Post.objects.select_related('category', 'subcategory', 'user').get(id=post_id)
-    return render(request, 'aggregator/post.html', {'post': post})
+    if request.method == "POST":
+        post_form = EditPostForm(request.POST, request.FILES)
+        if post_form.is_valid():
+            data = post_form.cleaned_data
+            category = models.Category.objects.create(name=data['category'])
+            subcategory = models.Subcategory.objects.create(name=data['subcategory'])
+            # redacting post object
+            models.Post.objects.select_related('category', 'subcategory', 'user').prefetch_related('media_set').filter(id=post_id).update(title=data['title'], description=data['description'],
+                                                    category=category,
+                                                    subcategory=subcategory, price=data['price'],
+                                                    city = data['city'])
+            post = models.Post.objects.select_related('category', 'subcategory', 'user').prefetch_related('media_set').get(id=post_id)
+            prepolulated_fields = EditPostForm.prepopulate(post=post)
+            post_form = EditPostForm(initial=prepolulated_fields)
+            #return render(request, 'aggregator/post.html', {'post': post, 'post_form': post_form})
+            return redirect('/myposts')
+    else:
+        post = models.Post.objects.select_related('category', 'subcategory', 'user').prefetch_related('media_set').get(id=post_id)
+        prepolulated_fields = EditPostForm.prepopulate(post=post)
+        post_form = EditPostForm(initial=prepolulated_fields)
+        return render(request, 'aggregator/post.html', {'post': post, 'post_form': post_form})
 
 def add_post(request):
     if request.method == "POST":

@@ -1,7 +1,17 @@
 {% extends 'aggregator/base.html' %}
-
+{% load static %}
 {%block content%}
+{% if request.user.id != post.user_id %}
 <h3>{{post.title}}</h3>
+{% if post.media_set.all.0.photo %}
+<div>
+    <img src="{{post.media_set.all.0.photo.url}}" style="width:200px;height:150px;">
+</div>
+{% else %}
+<div>
+    <img src="{% static "aggregator/no-image-icon.png" %}" style="width:200px;height:150px;">
+</div>
+{% endif %}
 <h4>{{post.price}}$</h4>
 <h5>{{post.city}}</h5>
 <hr>
@@ -12,5 +22,12 @@
 <h6>Phone: {{post.user.profile.phone_number}}</h6>
 <hr>
 {{post.description}}
+{% else %}
+<form method="POST" class="form-group" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ post_form.as_p }}
+    <button type="submit" class="btn btn-success">Submit</button>
+</form>
+{% endif %}
 
 {%endblock%}
