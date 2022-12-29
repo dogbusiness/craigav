@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from .forms import PostForm, EditPostForm
 from . import models
 from django.utils.datastructures import MultiValueDictKeyError
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 def index(request):
@@ -79,3 +80,15 @@ def add_post(request):
             return redirect('/')
         post_form = PostForm()
         return render(request, 'aggregator/addpost.html', {'post_form': post_form})
+
+def delete_post(request, post_id):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    post_to_delete = models.Post.objects.select_related('category', 'subcategory', 'user').prefetch_related('media_set').get(id=post_id)
+    print(post_to_delete.user.id)
+    print(request.user.id)
+    if post_to_delete.user.id != request.user.id:
+        raise PermissionDenied()
+    else:
+        post_to_delete.delete()
+        return redirect('/myposts')

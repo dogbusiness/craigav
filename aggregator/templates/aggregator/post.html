@@ -23,10 +23,22 @@
 <hr>
 {{post.description}}
 {% else %}
+<h3>This is your post.</h3> 
+<h4>You can edit or delete it</h4>
+{% if post.media_set.all.0.photo %}
+<div>
+    <img src="{{post.media_set.all.0.photo.url}}" style="width:200px;height:150px;">
+</div>
+{% else %}
+<div>
+    <img src="{% static "aggregator/no-image-icon.png" %}" style="width:200px;height:150px;">
+</div>
+{% endif %}
 <form method="POST" class="form-group" enctype="multipart/form-data">
     {% csrf_token %}
     {{ post_form.as_p }}
-    <button type="submit" class="btn btn-success">Submit</button>
+    <button type="submit" class="btn btn-success">Edit</button>
+    <a class='btn btn-danger' href="{% url 'delete_post' post_id=post.id %}">Delete</a>
 </form>
 {% endif %}
 
