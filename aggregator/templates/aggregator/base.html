@@ -15,22 +15,43 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#">Hidden brand</a>
+            <a class="navbar-brand" href="{% url "index" %}">Hidden brand</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href="{% url "index" %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="{% url 'about' %}">About</a>
               </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{user.username}}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                  <li><a class="dropdown-item" href="{% url 'change_profile' %}">Your Profile</a></li>
+                  <li><a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a></li>
+                  <li><a class="dropdown-item" href="{% url 'my_posts' %}">My Posts <span class="badge badge-warning">9</span></a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'user_logout' %}">Log Out</a></li>
+                </ul>
+              </li>
+              {% else %}
               <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Profile</a>
               </li>
+              {% endif %}
             </ul>
+            {% if user.is_authenticated %}
+            <div style="width:185px; height:30px;">
+            <a class='btn btn-success w-100' href="{% url 'add_post' %}">Create a posting</a>
+            </div>
+            {% endif %}
+            <!--
             <form class="d-flex">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            </form>-->
           </div>
         </div>
       </nav>

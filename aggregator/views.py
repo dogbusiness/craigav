@@ -92,3 +92,6 @@ def delete_post(request, post_id):
     else:
         post_to_delete.delete()
         return redirect('/myposts')
+
+def about(request):
+    return render(request, 'aggregator/about.html')

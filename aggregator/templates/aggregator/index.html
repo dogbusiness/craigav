@@ -40,22 +40,19 @@
     </div>
 </div>
 
-<div class="pagination container justify-content-center" style="border: 1px; border-color: aqua; text-align: center;">
-    <span class="step-links">
+<nav aria-label="Page navigation example" class="justify-content-center">
+    <ul class="pagination justify-content-center">
         {% if page.has_previous %}
-            <a href="?page=1">&laquo;</a>
-            <a href="?page={{ page.previous_page_number }}">&lsaquo;</a>
+        <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">&lsaquo;</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}">{{ page.previous_page_number }}</a></li>
         {% endif %}
-
-        <span class="current">
-            {{page.number}}
-        </span>
-        
+        <li class="page-item"><a class="page-link disabled">{{page.number}}</a></li>
         {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}">{{ page.next_page_number }}</a>
-            <a href="?page={{ page.next_page_number }}">&rsaquo;</a>
-            <a href="?page={{ page.paginator.num_pages }}">&raquo;</a>
-        {% endif %}
-    </span>
-</div>
+        <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">{{ page.next_page_number }}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}">&rsaquo;</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page.paginator.num_pages }}">&raquo;</a></li>
+    {% endif %}
+    </ul>
+  </nav>
 {%endblock%}
