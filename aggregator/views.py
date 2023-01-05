@@ -9,16 +9,26 @@ from django.db.models import Q
 # Create your views here.
 def search_post(request):
     if request.method == "GET":
+        # используем это чтобы не терять q
         title = request.GET.get('title')
         category = request.GET.get('category')
         subcategory = request.GET.get('subcategory')
         city = request.GET.get('city')
-        # используем это чтобы не терять q
 
         # по факту icontains не работает с русским :( Решается переходом на postgreSQL и т.п.
-        posts = models.Post.objects.prefetch_related('media_set').filter(Q(title__icontains=title))
+        posts = models.Post.objects.select_related('category', 'subcategory', 'user').prefetch_related('media_set').all()
+        if title != '':
+            posts = posts.filter(Q(title__icontains=title))
+        if category != '':
+            posts = posts.filter(Q(category__name=category))
+        if subcategory != '':
+            posts = posts.filter(Q(subcategory__name=subcategory))
+        if city != '':
+            posts = posts.filter(Q(city__icontains=city))
         
-        paginator = Paginator(posts, 2)
+        posts = posts.order_by('id')
+        
+        paginator = Paginator(posts, 3)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
     
@@ -29,12 +39,11 @@ def search_post(request):
             'subcategory': subcategory,
             'city': city
         }
-
         return render(request, 'aggregator/search_post.html', context=context)
 
 def index(request):
     posts = models.Post.objects.prefetch_related('media_set')
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'aggregator/index.html', {'page': page_obj})
@@ -43,8 +52,7 @@ def my_posts(request):
     if not request.user.is_authenticated:
         return redirect('/')
     posts = models.Post.objects.prefetch_related('media_set').filter(user=request.user)
-    print(posts)
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'aggregator/my_posts.html', {'page': page_obj})    
@@ -89,7 +97,6 @@ def add_post(request):
             try:
                 photo = request.FILES['photo']
                 new_photo = models.Media.objects.create(name=photo.name, photo=photo, post_id=new_post.id)
-                print(new_photo)
                 return redirect('/')
             except MultiValueDictKeyError:
                 # even if there is no picture we absolutely need to create blank one because of how 
@@ -111,8 +118,6 @@ def delete_post(request, post_id):
     if not request.user.is_authenticated:
         return redirect('/')
     post_to_delete = models.Post.objects.select_related('category', 'subcategory', 'user').prefetch_related('media_set').get(id=post_id)
-    print(post_to_delete.user.id)
-    print(request.user.id)
     if post_to_delete.user.id != request.user.id:
         raise PermissionDenied()
     else:
