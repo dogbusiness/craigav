@@ -1,11 +1,37 @@
 from django.shortcuts import render, redirect
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .forms import PostForm, EditPostForm
 from . import models
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 
 # Create your views here.
+def search_post(request):
+    if request.method == "GET":
+        title = request.GET.get('title')
+        category = request.GET.get('category')
+        subcategory = request.GET.get('subcategory')
+        city = request.GET.get('city')
+        # используем это чтобы не терять q
+
+        # по факту icontains не работает с русским :( Решается переходом на postgreSQL и т.п.
+        posts = models.Post.objects.prefetch_related('media_set').filter(Q(title__icontains=title))
+        
+        paginator = Paginator(posts, 2)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+    
+        context = {
+            'page': page_obj,
+            'title': title,
+            'category': category,
+            'subcategory': subcategory,
+            'city': city
+        }
+
+        return render(request, 'aggregator/search_post.html', context=context)
+
 def index(request):
     posts = models.Post.objects.prefetch_related('media_set')
     paginator = Paginator(posts, 2)

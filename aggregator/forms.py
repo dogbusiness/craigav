@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
 from aggregator.models import Category, Subcategory, Post, Media
-from .categories import CATEGORIES, SUBCATEGORIES
+from .categories import CATEGORIES, SUBCATEGORIES, CATEGORIES_WE, SUBCATEGORIES_WE
 # ПОПРАВЬ ИМПОРТЫ
 
 # single form for creating posts
