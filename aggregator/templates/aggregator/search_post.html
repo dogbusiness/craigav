@@ -1,27 +1,16 @@
 {% extends 'aggregator/base.html' %}
 {% load static %}
 {%block content%}
-    <h2>Landing Page</h2>
-{% if user.is_authenticated %}
-    <h4>Hi {{ user.username }}!</h4>
-    <a class='btn btn-success' href="{% url 'user_logout' %}">Log Out</a>
-{% else %}
-    <h4>You are not logged in</h4>
-    <div class="d-flex">
-        <a class='btn btn-success' href="{% url 'user_login' %}">Log In</a>
-        <h5 style="margin-left: 5px;">or</h5>
-        <a style="margin-left: 5px;" class='btn btn-success' href="{% url 'user_register' %}">Register</a>
-    </div>
-{% endif %}
-<div class="d-flex justify-content-center">
+
+<div class="d-flex justify-content-center searchbar">
     <form method="GET" action="{% url 'search_post' %}" class="form-group row" enctype="multipart/form-data">
-        
-        <div class="col">
-            <input type="text" name="title" maxlength="50" id="id_title" placeholder="Title">
+    
+        <div class="col-sm-4 col-lg">
+            <input class="search-element" type="text" name="title" maxlength="50" id="id_title" placeholder="Title">
         </div>
 
-        <div class="col">
-            <select name="category" id="id_category">
+        <div class="col-sm-4 col-lg">
+            <select class="search-element" name="category" id="id_category">
                 <option value="">--Category--</option>
 
                 <option value="Transport">Transport</option>
@@ -46,8 +35,8 @@
             </select>
             </div>
         
-        <div class="col">
-            <select name="subcategory" id="id_subcategory">
+        <div class="col-sm-4 col-lg">
+            <select class="search-element" name="subcategory" id="id_subcategory">
                 <option value="">--SubCategory--</option>
 
                 <option value="Cars">Cars</option>
@@ -148,18 +137,18 @@
             </select>
         </div>
         
-        <div class="col">
-            <input type="text" name="city" maxlength="200" id="id_city" placeholder="City">
+        <div class="col-sm-4 col-lg">
+            <input class="search-element" type="text" name="city" maxlength="200" id="id_city" placeholder="City">
         </div>
         
-        <div class="col">
-            <button type="submit" class="btn btn-success">
-                Search
+        <div class="col-sm-4 col-lg">
+            <button type="submit" class="btn btn-warning search-button">
+                <i class="fa-solid fa-magnifying-glass"></i>
             </button>
         </div>
     </form>
 </div>
-<div class="container">
+<div class="container posts">
     <div class="row">
         {% for post in page %}
             <div class="col">
