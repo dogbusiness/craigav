@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-mkxcq@=h)8@p^44j1c_(5!w)%&u!-#i+3d_f=5*g@4s_zhb30^"
+SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-mkxcq@=h)8@p^44j1c_(5!w)%&u!-#i+3d_f=5*g@4s_zhb30^')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
@@ -87,6 +87,7 @@ WSGI_APPLICATION = "craigav.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+MAX_CONN_AGE = 600
 # default and worked in development
 DATABASES = {
     "default": {
@@ -101,7 +102,10 @@ DATABASES = {
 #         conn_health_checks=True,
 #     )
 # }
-
+if "DATABASE_URL" in os.environ:
+    # Configure Django for DATABASE_URL environment variable.
+    DATABASES["default"] = dj_database_url.config(
+        conn_max_age=MAX_CONN_AGE, ssl_require=True)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
