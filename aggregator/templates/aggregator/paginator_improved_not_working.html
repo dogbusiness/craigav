@@ -1,4 +1,4 @@
-<!-- нерабочий "улучшенный паджинатор" {# 
+<!-- нерабочий "улучшенный паджинатор" {#
 <div class="pagination container justify-content-center" style="border: 1px; border-color: aqua; text-align: center;">
     <span class="step-links">
         {% if page.has_previous %}
@@ -9,7 +9,7 @@
         <span class="current">
             {{page.number}}
         </span>
-        
+
         {% for pg_num in page.paginator.page_range %}
             {% if paginator.get_page(pg_num).has_next %}
                 <a href="?page={{ page.paginator.get_page(pg_num).next_page_number }}">{{ page.paginator.get_page(pg_num).next_page_number }}</a>

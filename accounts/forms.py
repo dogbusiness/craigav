@@ -1,6 +1,7 @@
-from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
-from django.contrib.auth.models import User
 from django import forms
+from django.contrib.auth.forms import SetPasswordForm, UserCreationForm
+from django.contrib.auth.models import User
+
 
 class RegisterForm(UserCreationForm):
     birth_date = forms.DateField()
@@ -10,7 +11,17 @@ class RegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ["username", "email", "password1", "password2", "birth_date", 'phone_number', 'city', 'country']
+        fields = [
+            "username",
+            "email",
+            "password1",
+            "password2",
+            "birth_date",
+            "phone_number",
+            "city",
+            "country",
+        ]
+
 
 class ChangeUserForm(forms.ModelForm):
     birth_date = forms.DateField()
@@ -20,15 +31,20 @@ class ChangeUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "email", "birth_date", 'phone_number', 'city', 'country']
+        fields = ["username", "email", "birth_date", "phone_number", "city", "country"]
 
     # method for prepopulating fields with current logged in user
     def prepopulate(user_profile):
-        initial_in_fields = {"username": user_profile.username, "email": user_profile.email, 
-        "birth_date": user_profile.profile.birth_date, 'phone_number': user_profile.profile.phone_number, 
-        'city': user_profile.profile.city, 'country': user_profile.profile.country}
+        initial_in_fields = {
+            "username": user_profile.username,
+            "email": user_profile.email,
+            "birth_date": user_profile.profile.birth_date,
+            "phone_number": user_profile.profile.phone_number,
+            "city": user_profile.profile.city,
+            "country": user_profile.profile.country,
+        }
         return initial_in_fields
-    
+
     # неудачное попытка переписания сохранения. Приводит к созданию пользователя без пароля)
     # def save(self, change_form, commit=True):
     #     # calling for method in default django ModelForm to save user
@@ -41,13 +57,8 @@ class ChangeUserForm(forms.ModelForm):
     #     user.save()
     #     return user
 
+
 class SetPasswordForm(SetPasswordForm):
     class Meta:
         model = User
-        fields = ['new_password1', 'new_password2']
-
-
-
-
-
-
+        fields = ["new_password1", "new_password2"]

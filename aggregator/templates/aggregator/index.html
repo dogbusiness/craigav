@@ -4,7 +4,7 @@
 
 <div class="d-flex justify-content-center searchbar">
     <form method="GET" action="{% url 'search_post' %}" class="form-group row" enctype="multipart/form-data">
-    
+
         <div class="col-sm-4 col-lg">
             <input class="search-element" type="text" name="title" maxlength="50" id="id_title" placeholder="Title">
         </div>
@@ -34,7 +34,7 @@
                 <option value="Business and Business Equipment">Business and Business Equipment</option>
             </select>
             </div>
-        
+
         <div class="col-sm-4 col-lg">
             <select class="search-element" name="subcategory" id="id_subcategory">
                 <option value="">--SubCategory--</option>
@@ -136,11 +136,11 @@
                 <option value="Business equipment">Business equipment</option>
             </select>
         </div>
-        
+
         <div class="col-sm-4 col-lg">
             <input class="search-element" type="text" name="city" maxlength="200" id="id_city" placeholder="City">
         </div>
-        
+
         <div class="col-sm-4 col-lg">
             <button type="submit" class="btn btn-warning search-button">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -170,7 +170,7 @@
                 <div>
                     <h6>{{post.city}}</h6>
                 </div>
-            </div>    
+            </div>
         {% endfor %}
     </div>
 </div>

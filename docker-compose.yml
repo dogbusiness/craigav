@@ -13,4 +13,3 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   django-craigav:
-    
