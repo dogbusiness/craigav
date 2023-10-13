@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from .categories import CATEGORIES, SUBCATEGORIES
 
@@ -16,7 +17,7 @@ class Category(models.Model):
 
 
 class Subcategory(models.Model):
-    name = models.CharField(max_length=30, choices=SUBCATEGORIES)
+    name = models.CharField(_("Name"), max_length=30, choices=SUBCATEGORIES)
 
     class Meta:
         db_table = 'content"."subcategory'
@@ -27,13 +28,13 @@ class Subcategory(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=50)
-    description = models.CharField(max_length=1500)
+    title = models.CharField(_("Title"), max_length=50)
+    description = models.CharField(_("Description"), max_length=1500)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     subcategory = models.ForeignKey(Subcategory, on_delete=models.SET_NULL, null=True)
-    price = models.DecimalField(max_digits=12, decimal_places=2)
-    city = models.CharField(max_length=200)
+    price = models.DecimalField(_("Price"), max_digits=12, decimal_places=2)
+    city = models.CharField(_("City"), max_length=200)
 
     class Meta:
         db_table = "content.post"

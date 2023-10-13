@@ -21,12 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-mkxcq@=h)8@p^44j1c_(5!w)%&u!-#i+3d_f=5*g@4s_zhb30^",
+)
 
 DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get(
-    "django-insecure-mkxcq@=h)8@p^44j1c_(5!w)%&u!-#i+3d_f=5*g@4s_zhb30^"
+    "DJANGO_ALLOWED_HOSTS", ["127.0.0.1", "localhost", "craigav"]
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -119,5 +122,14 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
+
+# LOCALE_PATHS = ([os.path.join(BASE_DIR, 'locale')])
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, "locale"),
+    os.path.join("craigav/locale"),
+    os.path.join("aggregator/locale"),
+    os.path.join("accounts/locale"),
+)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
