@@ -26,11 +26,13 @@ SECRET_KEY = os.environ.get(
     "django-insecure-mkxcq@=h)8@p^44j1c_(5!w)%&u!-#i+3d_f=5*g@4s_zhb30^",
 )
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = os.environ.get(
-    "DJANGO_ALLOWED_HOSTS", ["127.0.0.1", "localhost", "craigav"]
-)
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",") or [
+    "127.0.0.1",
+    "localhost",
+    "craigav",
+]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
@@ -95,7 +97,7 @@ DATABASES = {
         "PORT": os.environ.get("POSTGRES_PORT", 5432),
         "OPTIONS": {
             # Нужно явно указать схемы, с которыми будет работать приложение.
-            "options": "-c search_path=public,content"
+            "options": "-c search_path=content,public"
         },
     }
 }

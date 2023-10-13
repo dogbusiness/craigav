@@ -7,9 +7,35 @@ volumes:
 services:
   psql:
     image: postgres:14
+    ports:
+      - "5432:5432"
     env_file:
       - ./.envs/.postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  django-craigav:
+  craigav:
+    build:
+      context: .
+      dockerfile: ./compose/Dockerfile
+    env_file:
+      - ./.envs/.django
+      - ./.envs/.postgres
+    depends_on:
+      - psql
+    ports:
+      - "8000:8000"
+    # volumes:
+    #   - static_data:/src/staticfiles
+    command: "/start"
+
+  nginx:
+    image: nginx:stable-alpine3.17
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/configs:/etc/nginx/conf.d:ro
+      - ./src/staticfiles:/staticfiles
+    ports:
+      - "80:80"
+    depends_on:
+      - craigav

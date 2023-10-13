@@ -37,7 +37,7 @@ class Post(models.Model):
     city = models.CharField(_("City"), max_length=200)
 
     class Meta:
-        db_table = "content.post"
+        db_table = 'content"."post'
 
     def __str__(self):
         return f"{self.title}, {self.description}, {self.price}"
@@ -49,7 +49,7 @@ class Media(models.Model):
     photo = models.ImageField(upload_to="photo/%Y/%m/%d/", null=True, blank=True)
 
     class Meta:
-        db_table = "content.media"
+        db_table = 'content"."media'
 
     def __str__(self):
         return f"{self.post}, {self.name}"
