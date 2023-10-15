@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get(
     "django-insecure-mkxcq@=h)8@p^44j1c_(5!w)%&u!-#i+3d_f=5*g@4s_zhb30^",
 )
 
-DEBUG = False
+DEBUG = os.environ.get("DJANGO_DEBUG", False)
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",") or [
     "127.0.0.1",

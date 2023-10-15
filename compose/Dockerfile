@@ -63,4 +63,5 @@ RUN chmod +x /start
 
 COPY ./src ${APP_HOME}
 
+EXPOSE 8000
 ENTRYPOINT ["/entrypoint"]
