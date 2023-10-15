@@ -1,7 +1,56 @@
-This is basically the clone of Russian Avito / American Craiglist for my portfolio This is my first huge project written with Django. During the development there were multiple problems with understanding Django as previously I only worked with Flask. Such as django-templates, base dirs for static files etc. Unfortunately I could not deploy the version which serves files added by the users as it would involve working with Nginx and I have other priorities at the moment. Maybe I will fix it in the future.
+# Simple to-do list
 
-Deployed here: https://craigav-1.onrender.com
-----------------------------------------------------
-Это по сути аналог российского Авито/ американского Craiglist для моего портфолио Это мой первый крупный проект, написанный на Django. Во время разработки было много проблем с пониманием Django, так как раньше я работал только с Flask. Например, django-шаблоны, base dirs для статических файлов и т. д. К сожалению, я не смог развернуть версию, которая подает файлы, добавленные пользователями, поскольку это потребует работы с Nginx, а у меня сейчас другие приоритеты. Возможно в будущем исправлю.
+## Project description
 
-Деплой здесь: https://craigav-1.onrender.com
+<details>
+<summary>English</summary>
+
+## What is this?
+Basically this is the clone of Russian Avito / American Craiglist
+
+## Why is it good?
+It has minimalistic design, all django features(migrations, admin, auth) and web-server to give static.
+
+## What is under the hood?
+The app is written with:
+- Backend: Django
+- Database: PostgreSQL
+- Front: Bootsrap
+- Web server: Nginx gives static, solves "leaky bucket" problem
+- Containers: Docker compose
+
+## How to install?
+```docker compose build && docker compose up -d```
+
+
+## Disclaimer
+The app was originally written in the last year (2022). The current commit is the attempt to refactor code and enhance the app with nginx and psql (previously sqlite)
+
+</details>
+
+
+<details>
+<summary>Russian</summary>
+
+## Что это?
+Это простой клон российского Авито / Американского Craiglist
+
+## Почему это хорошо?
+У приложения минималистичный дизайн, все фичи джанго (миграции, админка, аутентификация) веб-сервер, отдающий статику
+
+## Что под капотом?
+The app is written with:
+- Бекэнд Django
+- СУБД: PostgreSQL
+- Фронт: Bootsrap
+- Веб-сервер: Nginx отдает статику, решает проблему "протекающего ведра"
+- Containers: Docker compose
+
+## Как установить и запустить?
+```docker compose build && docker compose up -d```
+
+
+## Дисклеймер
+Приложение было написано в прошлом году (2022). Текущий коммит - попытка рефакторинга кода и улучшения посредством добавления nginx и замены sqlite на psql.
+
+</details>
