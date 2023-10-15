@@ -1,0 +1,193 @@
+{% extends 'aggregator/base.html' %}
+{% load static %}
+{%block content%}
+
+<div class="d-flex justify-content-center searchbar">
+    <form method="GET" action="{% url 'search_post' %}" class="form-group row" enctype="multipart/form-data">
+
+        <div class="col-sm-4 col-lg">
+            <input class="search-element" type="text" name="title" maxlength="50" id="id_title" placeholder="Title">
+        </div>
+
+        <div class="col-sm-4 col-lg">
+            <select class="search-element" name="category" id="id_category">
+                <option value="">--Category--</option>
+
+                <option value="Transport">Transport</option>
+
+                <option value="Real Estate">Real Estate</option>
+
+                <option value="Job">Job</option>
+
+                <option value="Service">Service</option>
+
+                <option value="Personal Usage">Personal Stuff</option>
+
+                <option value="For Home">For Home</option>
+
+                <option value="Electronics">Electronics</option>
+
+                <option value="Hobby and Leisure">Hobby and Leisure</option>
+
+                <option value="Pets">Pets</option>
+
+                <option value="Business and Business Equipment">Business and Business Equipment</option>
+            </select>
+            </div>
+
+        <div class="col-sm-4 col-lg">
+            <select class="search-element" name="subcategory" id="id_subcategory">
+                <option value="">--SubCategory--</option>
+
+                <option value="Cars">Cars</option>
+
+                <option value="Motorcycles">Motorcycles</option>
+
+                <option value="Trucks">Trucks and Special Equipment</option>
+
+                <option value="Water">Water</option>
+
+                <option value="Parts and Accessories">Parts and Accessories</option>
+
+                <option value="Overseas Properties">Overseas Estate</option>
+
+                <option value="Apartments">Apartments</option>
+
+                <option value="Rooms">Rooms</option>
+
+                <option value="Houses">Houses</option>
+
+                <option value="Parking">Parking</option>
+
+                <option value="Commercial Properties">Commercial Properties</option>
+
+                <option value="Vacancies">Vacancies</option>
+
+                <option value="IT/Telecom">IT/Telecom</option>
+
+                <option value="Business Services">Business Services</option>
+
+                <option value="Tutoring">Tutoring</option>
+
+                <option value="Building">Building</option>
+
+                <option value="Other">Other</option>
+
+                <option value="Clothes and Footwear">Clothes and Footwear</option>
+
+                <option value="Clothes and Footwear for Kids">Clothes and Footwear for Kids</option>
+
+                <option value="Baby Products and Toys">Baby Products and Toys</option>
+
+                <option value="Accessories">Accessories</option>
+
+                <option value="Health and Beauty">Health and Beauty</option>
+
+                <option value="Household Equipment">Household Equipment</option>
+
+                <option value="Furniture and Interior">Furniture and Interior</option>
+
+                <option value="Dishes and Kitchen Equipment">Dishes and Kitchen Equipment</option>
+
+                <option value="Groceries">Groceries</option>
+
+                <option value="Maintenance and Building">Maintenance and Building</option>
+
+                <option value="Plants">Plants</option>
+
+                <option value="Audio and Video">Audio and Video</option>
+
+                <option value="Videogaming">Videogaming</option>
+
+                <option value="Personal Computers">Personal Computers</option>
+
+                <option value="Laptops">Laptops</option>
+
+                <option value="Phones">Phones</option>
+
+                <option value="Other">Other</option>
+
+                <option value="Tickets">Tickets</option>
+
+                <option value="Bikes">Bikes</option>
+
+                <option value="Books and Magazines">Books and Magazines</option>
+
+                <option value="Collecting">Collecting</option>
+
+                <option value="Hunting and Fishing">Hunting and Fishing</option>
+
+                <option value="Sports and Leisure">Sports and Leisure</option>
+
+                <option value="Dogs">Dogs</option>
+
+                <option value="Cats">Cats</option>
+
+                <option value="Birds">Birds</option>
+
+                <option value="Fish">Fish</option>
+
+                <option value="Other Pets">Other Pets</option>
+
+                <option value="Pest Products">Pest Products</option>
+
+                <option value="Business for Sale">Business for Sale</option>
+
+                <option value="Business equipment">Business equipment</option>
+            </select>
+        </div>
+
+        <div class="col-sm-4 col-lg">
+            <input class="search-element" type="text" name="city" maxlength="200" id="id_city" placeholder="City">
+        </div>
+
+        <div class="col-sm-4 col-lg">
+            <button type="submit" class="btn btn-warning search-button">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </form>
+</div>
+<div class="container posts">
+    <div class="row">
+        {% for post in page %}
+            <div class="col">
+                {% if post.media_set.all.0.photo %}
+                <div>
+                    <img src="{{post.media_set.all.0.photo.url}}" style="width:200px;height:150px;">
+                </div>
+                {% else %}
+                <div>
+                    <img src="{% static "aggregator/no-image-icon.png" %}" style="width:200px;height:150px;">
+                </div>
+                {% endif %}
+                <div>
+                    <h4><a href="{% url 'show_post' post_id=post.id %}">{{ post.title|upper }}</a></h4>
+                </div>
+                <div>
+                    <h5>{{post.price}}$</h5>
+                </div>
+                <div>
+                    <h6>{{post.city}}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<nav aria-label="Page navigation example" class="justify-content-center">
+    <ul class="pagination justify-content-center">
+        {% if page.has_previous %}
+        <li class="page-item"><a class="page-link" href="?title={{title}}&category={{category}}&subcategory={{subcategory}}&city={{city}}&page=1">&laquo;</a></li>
+        <li class="page-item"><a class="page-link" href="?title={{title}}&category={{category}}&subcategory={{subcategory}}&city={{city}}&page={{ page.previous_page_number }}">&lsaquo;</a></li>
+        <li class="page-item"><a class="page-link" href="?title={{title}}&category={{category}}&subcategory={{subcategory}}&city={{city}}&page={{ page.previous_page_number }}">{{ page.previous_page_number }}</a></li>
+        {% endif %}
+        <li class="page-item"><a class="page-link disabled">{{page.number}}</a></li>
+        {% if page.has_next %}
+        <li class="page-item"><a class="page-link" href="?title={{title}}&category={{category}}&subcategory={{subcategory}}&city={{city}}&page={{ page.next_page_number }}">{{ page.next_page_number }}</a></li>
+        <li class="page-item"><a class="page-link" href="?title={{title}}&category={{category}}&subcategory={{subcategory}}&city={{city}}&page={{ page.next_page_number }}">&rsaquo;</a></li>
+        <li class="page-item"><a class="page-link" href="?title={{title}}&category={{category}}&subcategory={{subcategory}}&city={{city}}&page={{ page.paginator.num_pages }}">&raquo;</a></li>
+    {% endif %}
+    </ul>
+  </nav>
+{%endblock%}
