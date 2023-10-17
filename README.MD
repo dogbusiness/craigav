@@ -1,4 +1,4 @@
-# Simple to-do list
+## Classified advertisements website
 
 ## Project description
 
